@@ -6,3 +6,4 @@ Need to update excel sheet to show datetime, crop loss, and property loss data a
 need to update legend + add css. style to share 
 # Complete Visualization: https://chaseingersoll.github.io/Tornadoes/tornadoes_finalized.html
 updated legend
+# Lab 9 D3 example using Tornado Data https://chaseingersoll.github.io/Tornadoes/lab9_v2.html
