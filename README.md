@@ -8,7 +8,7 @@ need to update legend + add css.
 style to share: finalstyle.css
 # Complete Visualization: https://chaseingersoll.github.io/Tornadoes/tornadoes_finalized.html
 updated legend, etc
-# Complete Visualization with css incorporated: https://chaseingersoll.github.io/Torandoes_final_css.html
+# Complete Visualization with css incorporated: https://chaseingersoll.github.io/Tornadoes_final_css.html
 includes css style
 # Lab 9 D3 example using Tornado Data https://chaseingersoll.github.io/Tornadoes/lab9_v2.html
 heat map showing tornado counts by state 
