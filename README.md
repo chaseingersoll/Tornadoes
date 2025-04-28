@@ -15,3 +15,4 @@ https://chaseingersoll.github.io/Tornadoes/lab9_v2.html
 heat map showing tornado counts by state 
 https://chaseingersoll.github.io/Tornadoes/wildfiresheatmap.html
 heat map showing wildfire counts by state
+https://chaseingersoll.github.io/Tornadoes/landslidesheatmap.html
