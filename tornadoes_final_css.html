@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tornado Visualization</title>
+  <!-- Mapbox GL JS -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- External CSS File -->
+  <link rel="stylesheet" href="finalstyle.css">
+</head>
+<body>
+  <div id="map"></div>
+  <div id="title-box">USA Tornadoes from 2000 to 2010</div>
+  <div id="slider-container">
+    <label for="slider">Filter Tornadoes by Year:</label>
+    <div class="tooltip-wrapper">
+      <div id="slider-tooltip">2000</div>
+      <input id="slider" type="range" min="2000" max="2010" step="1" value="2000">
+    </div>
+  </div>
+  <div id="legend">
+    <div class="legend-item">
+      <div class="legend-color" style="background: #00FF00;"></div>
+      Weak Tornado (Magnitude 0–1)
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #FFFF00;"></div>
+      Moderate Tornado (Magnitude 2–3)
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #FFA500;"></div>
+      Strong Tornado (Magnitude 4)
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #FF0000;"></div>
+      Violent Tornado (Magnitude 5)
+    </div>
+  </div>
+
+  <script>
+    // Access Token
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhc2VpbmdlcnNvbGwiLCJhIjoiY203dzYxcGV3MDI5bTJub2VncjJ3dWEwNSJ9.yyTWOBR3alRtUNL_2ZZHSQ';
+
+    // Initialize Map
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/chaseingersoll/cm9s38cl6009a01sp3smfe18b', // Your custom style
+      center: [-97, 37], // Centered on the US
+      zoom: 4
+    });
+
+    map.on('load', () => {
+      // Add tornado data source
+      map.addSource('tornadoes', {
+        type: 'vector',
+        url: 'mapbox://chaseingersoll.cm93zf5e'
+      });
+
+      // Add a circle layer for tornadoes
+      map.addLayer({
+        id: 'tornadoes-layer',
+        type: 'circle',
+        source: 'tornadoes',
+        'source-layer': '1950-2023_all_tornadoes_2000--6osxed',
+        paint: {
+          'circle-radius': [
+            'interpolate',
+            ['linear'],
+            ['get', 'magnitude'],
+            0, 3,
+            5, 15
+          ],
+          'circle-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'magnitude'],
+            0, '#00FF00', // Weak Tornado (Green)
+            2, '#FFFF00', // Moderate Tornado (Yellow)
+            4, '#FFA500', // Strong Tornado (Orange)
+            5, '#FF0000'  // Violent Tornado (Red)
+          ],
+          'circle-opacity': 0.8
+        }
+      });
+
+      // Add popups
+      map.on('click', 'tornadoes-layer', (e) => {
+        const properties = e.features[0].properties;
+
+        const date = `${String(properties.month).padStart(2, '0')}/${String(properties.day).padStart(2, '0')}/${properties.year}`;
+
+        const popupContent = `
+          <div style="font-size: 14px; line-height: 1.5;">
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td><strong>Date:</strong></td><td>${date}</td></tr>
+              <tr><td><strong>Magnitude:</strong></td><td>${properties.magnitude}</td></tr>
+              <tr><td><strong>Injuries:</strong></td><td>${properties.injuries || 0}</td></tr>
+              <tr><td><strong>Fatalities:</strong></td><td>${properties.fatalities || 0}</td></tr>
+            </table>
+          </div>
+        `;
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(popupContent)
+          .addTo(map);
+      });
+
+      // Change cursor to pointer on hover
+      map.on('mouseenter', 'tornadoes-layer', () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', 'tornadoes-layer', () => {
+        map.getCanvas().style.cursor = '';
+      });
+
+      // Add slider functionality
+      const slider = document.getElementById('slider');
+      const sliderTooltip = document.getElementById('slider-tooltip');
+      slider.addEventListener('input', (event) => {
+        const year = parseInt(event.target.value);
+        sliderTooltip.textContent = year;
+        map.setFilter('tornadoes-layer', ['==', ['get', 'year'], year]);
+      });
+    });
+  </script>
+</body>
+</html>
