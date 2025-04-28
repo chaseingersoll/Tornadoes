@@ -10,5 +10,8 @@ style to share: finalstyle.css
 updated legend, etc
 # Complete Visualization with css incorporated: https://chaseingersoll.github.io/Tornadoes/tornadoes_final_css.html
 includes css style
-# Lab 9 D3 example using Tornado Data https://chaseingersoll.github.io/Tornadoes/lab9_v2.html
+# Heat Maps
+https://chaseingersoll.github.io/Tornadoes/lab9_v2.html
 heat map showing tornado counts by state 
+https://chaseingersoll.github.io/Tornadoes/wildfiresheatmap.html
+heat map showing wildfire counts by state
